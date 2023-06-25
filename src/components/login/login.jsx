@@ -29,7 +29,7 @@ const Login = () => {
       <Input type="password" label="password" state={password} setState={setPassword}/>
 
         
-        <button className="w-100 btn btn-lg btn-primary mt-2"  type="submit" onClick={submitHandler}>
+        <button className="w-100 btn btn-lg btn-primary mt-2" disabled={isLoading} type="submit" onClick={submitHandler}>
           {isLoading ? "Please wait..." : "Login"}
         </button>
         <div>

@@ -4,7 +4,7 @@ import { Icon } from '../../constants'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { userLoggedIn } from '../../slice/auth'
+import { userLRegisterIn } from '../../slice/auth'
 const Register = () => {
   const[userName, setUsername] = useState('')
   const[email, setEmail] = useState('')
@@ -14,7 +14,7 @@ const Register = () => {
   const dispatch = useDispatch()
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(userLoggedIn())
+    dispatch(userLRegisterIn())
   }
 
 
@@ -29,7 +29,7 @@ const Register = () => {
       <Input type="password" label="password" state={password} setState={setPassword}/>
 
         
-        <button className="w-100 btn btn-lg btn-primary mt-2" type="submit" onClick={submitHandler}>
+        <button className="w-100 btn btn-lg btn-primary mt-2" type="submit" disabled={isLoading} onClick={submitHandler}>
           {isLoading ? "signing in ..." : "Register"}
         </button>
        
