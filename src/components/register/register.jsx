@@ -2,10 +2,21 @@ import React from 'react'
 import {Input} from "../../ui"
 import { Icon } from '../../constants'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { userLoggedIn } from '../../slice/auth'
 const Register = () => {
   const[userName, setUsername] = useState('')
   const[email, setEmail] = useState('')
   const[password, setPassword] = useState('')
+
+  const {isLoading} = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  const submitHandler = (e) => {
+    e.preventDefault()
+    dispatch(userLoggedIn())
+  }
+
 
   return (
     <div className='text-center'>
@@ -18,7 +29,9 @@ const Register = () => {
       <Input type="password" label="password" state={password} setState={setPassword}/>
 
         
-        <button className="w-100 btn btn-lg btn-primary mt-2" type="submit">Sign in</button>
+        <button className="w-100 btn btn-lg btn-primary mt-2" type="submit" onClick={submitHandler}>
+          {isLoading ? "signing in ..." : "Register"}
+        </button>
        
       </form>
     </main>
