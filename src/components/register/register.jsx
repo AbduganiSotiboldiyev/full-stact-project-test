@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Input} from "../../ui"
 import { Icon } from '../../constants'
 import { useState } from 'react'
@@ -6,13 +6,16 @@ import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { signUserFailure, signUserStart, signUserSuccess} from '../../slice/auth'
 import AuthService from '../../sevices/auth'
+import ValidationError from '../validation-error/validation-error'
+import { useNavigate } from 'react-router-dom'
+
 
 const Register = () => {
   const[userName, setUsername] = useState('')
   const[email, setEmail] = useState('')
   const[password, setPassword] = useState('')
-
-  const {isLoading} = useSelector(state => state.auth)
+  const navigate = useNavigate()
+  const {isLoading,loggedIn} = useSelector(state => state.auth)
   const dispatch = useDispatch()
   const submitHandler = async (e) => {
     e.preventDefault()
@@ -27,6 +30,12 @@ const Register = () => {
     }
   }
 
+    useEffect(() =>{
+    if(loggedIn) {
+      navigate('/')
+    }
+  },[loggedIn])
+
 
   return (
     <div className='text-center'>
@@ -34,6 +43,9 @@ const Register = () => {
       <form>
        <span >{Icon}</span>
         <h1 className="h3 mb-3 fw-normal">Please register</h1>
+        
+        <ValidationError/>
+        
       <Input type="text" label="Username" state={userName} setState={setUsername} />
       <Input type="email" label="Email address" state={email} setState={setEmail}/>
       <Input type="password" label="password" state={password} setState={setPassword}/>

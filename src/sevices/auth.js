@@ -13,8 +13,8 @@ const AuthService = {
      },
     //  get user
       async getUser () {
-        // const response = await axios.post("/user")
-        // return response.data
+        const response = await axios.get("/user")
+        return response.data
      }
 }
 
