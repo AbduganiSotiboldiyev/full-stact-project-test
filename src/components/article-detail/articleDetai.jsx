@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getArticleFailure, getArticleSuccess, getarticleStart } from '../../slice/articleSlice'
 import ArticleService from '../../sevices/article'
 import moment from 'moment/moment'
@@ -9,7 +9,9 @@ import Loader from '../../ui/loader'
 const ArticleDetail = () => {
     const {slug} = useParams()
     const {articleDetails,isLoading} = useSelector(state => state.article)
+    const {user} = useSelector(state => state.auth)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const getArticleDetail = async () => {
@@ -25,6 +27,16 @@ const ArticleDetail = () => {
         }
         getArticleDetail()
     },[slug])
+
+    const deleteArticleHandler = async () => {
+        try {
+            await ArticleService.deleteArticle(slug)
+            navigate('/')
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     console.log(articleDetails);
 
@@ -51,8 +63,13 @@ const ArticleDetail = () => {
                 {articleDetails.body}
             </p>
         </div>
-        <button className="btn btn-primary btn-lg" type="button">Update</button>
-        <button className="btn btn-danger btn-lg" type="button"> Delete</button>
+        {user.username === articleDetails.author.username && (
+            <>
+                <button className="btn btn-primary btn-sm" type="button" onClick={() => {navigate(`/edit-article/${slug}`)}}>Update</button>
+                <button className="btn btn-outline-danger btn-sm" type="button" onClick={deleteArticleHandler}> Delete</button>
+            
+            </>
+            )}
 
       </div>
        

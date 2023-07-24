@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AddForm } from '../../ui'
 import ArticleService from '../../sevices/article'
-import { getArticleSuccess, getarticleStart } from '../../slice/articleSlice'
+import { createArticleFailure, createArticleStart, createArticleSucceess, getArticleSuccess, getarticleStart } from '../../slice/articleSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -32,7 +32,18 @@ const EditArticle = () => {
     getArticleDetail()
   },[])
 
-  const formSubmit = (e) => {
+  const formSubmit =async (e) => {
+    e.preventDefault();
+    dispatch(createArticleStart())
+    const article = {title, description, body}
+    try {
+      await ArticleService.editArticle(slug, article)
+      dispatch(createArticleSucceess())
+      navigate('/')
+    } catch (error) {
+      dispatch(createArticleFailure())
+      
+    }
    
   }
 
